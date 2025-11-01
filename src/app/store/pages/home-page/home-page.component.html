@@ -1,0 +1,82 @@
+<div class="m-6">
+  <div class="flex flex-row items-center justify-between mt-20 mb-6 gap-5">
+    <h1 class="font-bold text-2xl text-center whitespace-nowrap">{{ brandName }}</h1>
+
+    <label class="relative flex items-center w-full sm:w-125">
+      <input
+        type="text"
+        placeholder="Buscar..."
+        class="w-full p-3 pl-10 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+        (keyup)="onSearchInput($event)"
+      />
+      <div
+        class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none"
+      >
+        <svg
+          class="h-5 w-5 text-gray-400"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+          ></path>
+        </svg>
+      </div>
+    </label>
+  </div>
+
+  @if (showSections()) {
+  @if (categoriesResource.isLoading()) {
+      <div class="flex justify-center items-center my-8">
+        <span class="loading loading-spinner loading-lg text-primary"></span>
+      </div>
+    } @else {
+      <carousel />
+        <h1 class="font-bold text-2xl my-6">Categorías</h1>
+      <category-card [categories]="categoriesResource.value() ?? []" />
+    }
+
+    <h1 class="font-bold text-xl sm:text-2xl m-6 flex justify-center">
+      Productos más vendidos
+    </h1>
+    <div>
+  @if (topSellingProductsResource.isLoading()) {
+        <div class="flex justify-center items-center my-8">
+          <span class="loading loading-spinner loading-lg text-primary"></span>
+        </div>
+      } @else {
+        @if (topSellingProductsResource.value()?.data; as topProducts) {
+          @if (topProducts.length > 0) {
+            <best-selling-products [products]="topProducts.slice(0, 4)" />
+          } @else {
+            <p>No se encontraron productos.</p>
+          }
+        }
+      }
+    </div>
+  }
+
+
+  <h1 class="font-bold text-2xl m-6 flex justify-center">
+    ¡Haz tu pedido ahora!
+  </h1>
+  @if (productsResource.isLoading()) {
+    <div class="flex justify-center items-center my-8">
+      <span class="loading loading-spinner loading-lg text-primary"></span>
+    </div>
+  } @else {
+    <div
+      class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-6 p-2 mx-6 overflow-x-auto sm:overflow-x-hidden"
+    >
+      @for (product of filteredProducts(); track product.id) {
+        <div>
+          <product-card [products]="[product]" />
+        </div>
+      }
+    </div>
+  }

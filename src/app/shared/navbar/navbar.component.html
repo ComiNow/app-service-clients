@@ -1,0 +1,29 @@
+<div class="navbar bg-base-100/80 backdrop-blur-md shadow-lg fixed top-0 left-0 right-0 h-16 z-50">
+  <div class="flex-1">
+    <div class="px-2">
+      <a routerLink="/" class="inline-block">
+        <img [src]="logo" width="65" height="65" class="object-contain" />
+      </a>
+    </div>
+  </div>
+
+  <div class="flex-none gap-2">
+    @if (existsOrder()) {
+    <button class="btn btn-primary" (click)="openDialog('0ms', '0ms')">Sigue tu pedido</button>
+    }
+    <button class="btn btn-ghost btn-circle" (click)="navigateToCart()">
+      <div class="indicator">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M7 18c-1.104 0-2 .896-2 2s.896 2 2 2 2-.896 2-2-.896-2-2-2zm10 0c-1.104
+               0-2 .896-2 2s.896 2 2 2 2-.896 2-2-.896-2-2-2zM7.334 13h9.812c.784
+               0 1.476-.476 1.769-1.201l3.084-7.719A1 1 0 0 0 21.084 3H6.616l-.47-2.361A1
+               1 0 0 0 5.175 0H1a1 1 0 1 0 0 2h3.175l2.557 12.838A3 3 0 0 0 9.635 17H19a1 1 0 1 0
+               0-2H9.635a1 1 0 0 1-.975-.757L7.334 13z" />
+        </svg>
+        @if (cartItemCount > 0) {
+        <span class="badge badge-sm badge-error indicator-item rounded-full">{{ cartItemCount }}</span>
+        }
+      </div>
+    </button>
+  </div>
+</div>

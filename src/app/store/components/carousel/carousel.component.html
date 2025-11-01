@@ -1,0 +1,21 @@
+<div class="swiper" #swiperDiv>
+  <div class="swiper-wrapper">
+    @for (imageUrl of carouselImages; track $index) {
+    <div class="swiper-slide">
+      <img [src]="imageUrl" [alt]="'Imagen del carousel ' + ($index + 1)"
+        class="w-full h-full object-cover animate-fadeIn" />
+    </div>
+    } @empty {
+    <div class="swiper-slide">
+      <div class="flex items-center justify-center h-48 bg-gray-200 rounded-lg">
+        <p class="text-gray-500">No hay imágenes disponibles</p>
+      </div>
+    </div>
+    }
+  </div>
+
+  <div class="swiper-pagination"></div>
+  <div class="swiper-button-prev"></div>
+  <div class="swiper-button-next"></div>
+  <div class="swiper-scrollbar"></div>
+</div>

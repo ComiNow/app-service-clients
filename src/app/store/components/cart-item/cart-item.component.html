@@ -1,0 +1,52 @@
+<div class="card bg-base-100 shadow-lg border border-base-300 mb-4">
+  <div class="card-body p-4">
+    <div class="flex flex-row items-center justify-between">
+      <div class="flex items-center space-x-4">
+        <div class="avatar">
+          <div class="w-16 h-16 rounded-xl">
+            <img [src]="item().product.image" [alt]="item().product.name" class="object-cover"
+              (error)="onImageError($event)" />
+          </div>
+        </div>
+        <div>
+          <h3 class="font-bold text-base-content">{{ item().product.name }}</h3>
+          <div class="font-bold text-base-content text-left">
+            $ {{ item().product.price | number }}
+          </div>
+        </div>
+      </div>
+
+      <div class="flex flex-row items-center gap-4">
+        <div class="join bg-base-200 rounded-lg">
+          <button
+            class="btn btn-sm join-item btn-ghost shadow-none hover:bg-primary hover:text-primary-content transition-colors duration-200 rounded-l-lg"
+            (click)="decrementQuantity()" [disabled]="item().quantity <= 1">
+            -
+          </button>
+          <span class="join-item flex items-center justify-center px-4 font-bold text-base-content">
+            {{ item().quantity }}
+          </span>
+          <button
+            class="btn btn-sm join-item btn-ghost shadow-none hover:bg-primary hover:text-primary-content transition-colors duration-200 rounded-r-lg"
+            (click)="incrementQuantity()">
+            +
+          </button>
+        </div>
+
+        <button class="btn btn-circle btn-sm btn-error shadow-none hover:bg-error-focus transition-colors duration-200"
+          (click)="removeItem()">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <div class="flex justify-end mt-1">
+      <p class="font-bold text-base-content text-right">
+        Total: $ {{ item().product.price * item().quantity | number }}
+      </p>
+    </div>
+  </div>
+</div>

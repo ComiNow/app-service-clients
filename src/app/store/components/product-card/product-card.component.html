@@ -1,0 +1,39 @@
+@for(product of products(); track product.id){
+<div class="card bg-base-100 shadow-xl border border-base-300">
+  <div class="card-body items-center text-center">
+    <h2 class="card-title text-base-content">{{ product.name }}</h2>
+
+    <div class="avatar">
+      <div class="w-32 h-32 rounded-xl">
+        <img [src]="product.image" [alt]="product.name" class="object-cover" (error)="onImageError($event)" />
+      </div>
+    </div>
+
+    <div class="font-bold text-base-content text-center text-lg">
+      $ {{ product.price | number}}
+    </div>
+
+    <div class="join bg-base-200 rounded-lg">
+      <button
+        class="btn btn-sm join-item btn-ghost shadow-none hover:bg-primary hover:text-primary-content transition-colors duration-200 rounded-l-lg"
+        (click)="decrementQuantity(product)" [disabled]="getQuantity(product) <= 1">
+        -
+      </button>
+      <span class="join-item flex items-center justify-center px-4 font-bold text-base-content">
+        {{ getQuantity(product) }}
+      </span>
+      <button
+        class="btn btn-sm join-item btn-ghost shadow-none hover:bg-primary hover:text-primary-content transition-colors duration-200 rounded-r-lg"
+        (click)="incrementQuantity(product)">
+        +
+      </button>
+    </div>
+
+    <div class="card-actions w-full">
+      <button class="btn btn-primary w-full" (click)="addToCart(product)">
+        Agregar al carrito
+      </button>
+    </div>
+  </div>
+</div>
+}

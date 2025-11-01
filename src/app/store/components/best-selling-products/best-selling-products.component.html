@@ -1,0 +1,20 @@
+<div class="flex flex-row justify-center overflow-x-auto">
+  @for(product of products(); track product.id){
+  <div class="mx-2 shrink-0">
+    <div class="flex flex-col items-center justify-center">
+      <div
+        class="flex items-center justify-center border-2 font-bold text-2xl border-black rounded-full cursor-pointer hover:bg-sidebar-gray "
+        style="width: 15vw; height: 15vw"
+      >
+        <img
+          [src]="product.image"
+          [alt]="product.name"
+          class="w-full h-full object-cover rounded-full"
+          (error)="onImageError($event)"
+        />
+      </div>
+<h3 class="font-semibold my-2 text-xs sm:text-sm text-center">{{ product.name }}</h3>
+    </div>
+  </div>
+  }
+</div>

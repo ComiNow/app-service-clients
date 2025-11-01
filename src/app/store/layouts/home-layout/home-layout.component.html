@@ -1,0 +1,13 @@
+<navbar/>
+
+<section class="container mx-auto">
+  <router-outlet />
+</section>
+
+<div
+  *ngIf="tableNumber"
+  class="fixed bottom-6 right-6 z-50 flex flex-col items-center justify-center rounded-full bg-secondary text-primary-content w-16 h-16 shadow-lg"
+>
+  <span class="text-center text-xs font-bold">Mesa</span>
+  <span class="text-center text-xl font-extrabold">{{ tableNumber }}</span>
+</div>
