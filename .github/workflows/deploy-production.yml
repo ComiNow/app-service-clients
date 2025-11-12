@@ -66,10 +66,27 @@ jobs:
             --include "*.json" \
             --cache-control "public,max-age=0,must-revalidate"
 
-      - name: 🔄 Invalidate CloudFront cache
+      - name: 🔄 Resolve CloudFront distribution ID (if domain provided) and invalidate cache
+        env:
+          CF_INPUT: ${{ secrets.AWS_CLOUDFRONT_DISTRIBUTION_ID }}
         run: |
+          set -euo pipefail
+          echo "CloudFront input: $CF_INPUT"
+          # If input looks like a domain (contains a dot), try to resolve to Distribution ID
+          if [[ "$CF_INPUT" == *.* ]]; then
+            echo "Input appears to be a domain name -> resolving distribution ID via AWS API..."
+            DIST_ID=$(aws cloudfront list-distributions --query "DistributionList.Items[?DomainName=='${CF_INPUT}'].Id | [0]" --output text)
+            if [ -z "$DIST_ID" ] || [ "$DIST_ID" == "None" ]; then
+              echo "ERROR: Could not resolve distribution ID for domain $CF_INPUT"
+              echo "Double-check the domain or set AWS_CLOUDFRONT_DISTRIBUTION_ID to the distribution ID (E... )"
+              exit 1
+            fi
+          else
+            DIST_ID="$CF_INPUT"
+          fi
+          echo "Resolved Distribution ID: $DIST_ID"
           aws cloudfront create-invalidation \
-            --distribution-id ${{ secrets.AWS_CLOUDFRONT_DISTRIBUTION_ID }} \
+            --distribution-id "$DIST_ID" \
             --paths "/*"
 
       - name: ✅ Deployment complete

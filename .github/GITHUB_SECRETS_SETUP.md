@@ -35,7 +35,7 @@ Valor: [Tu Secret Access Key del usuario IAM github-actions-cominow-client]
 ### 3. AWS_REGION
 ```
 Nombre: AWS_REGION
-Valor:  
+Valor:
 ```
 **Descripción:** Región de AWS donde están tus recursos
 
@@ -53,9 +53,14 @@ Valor: cominow-client-prod
 ### 5. AWS_CLOUDFRONT_DISTRIBUTION_ID
 ```
 Nombre: AWS_CLOUDFRONT_DISTRIBUTION_ID
-Valor: d3gwsdg49ynx4o.cloudfront.net
+Valor: d3gwsdg49ynx4o.cloudfront.net  # o el Distribution ID (ej: E123ABCDEF123)
 ```
-**Descripción:** ID de la distribución de CloudFront
+**Descripción:** ID de la distribución de CloudFront o su dominio. El workflow soporta ambos formatos:
+
+- Recomendado: usa el *Distribution ID* (ej: `E1A2B3C4D5E6F`) — es lo más preciso.
+- Alternativa: puedes usar el *Domain Name* (ej: `d3gwsdg49ynx4o.cloudfront.net`) — el workflow intentará resolver automáticamente el Distribution ID vía la API de CloudFront.
+
+Si el valor es un dominio, el workflow ejecutará `aws cloudfront list-distributions` y resolverá el ID automáticamente antes de crear la invalidación.
 
 ---
 
