@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  baseUrl: 'https://api.cominow.com/api', // TODO: Actualizar con tu URL de producción del backend
+  baseUrl: 'https://z2j7v360-3000.use.devtunnels.ms/api',
 };
