@@ -1,6 +1,6 @@
-import { AfterViewInit, Component, ElementRef, viewChild, inject } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, ViewChild, inject } from '@angular/core';
+import { Autoplay, Navigation, Pagination, Scrollbar } from 'swiper/modules';
 import Swiper from 'swiper';
-import { Autoplay, Navigation, Pagination } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
@@ -45,7 +45,7 @@ import { AppConfigService } from '../../../services/app-config.service';
 })
 export class CarouselComponent implements AfterViewInit {
   private appConfigService = inject(AppConfigService);
-  swiperDiv = viewChild.required<ElementRef>('swiperDiv');
+  @ViewChild('swiperDiv', { static: false }) swiperDiv!: ElementRef<HTMLElement>;
 
   get carouselImages(): string[] {
     const images = this.appConfigService.imageCarousel;
@@ -58,13 +58,13 @@ export class CarouselComponent implements AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    const element = this.swiperDiv().nativeElement;
+    const element = this.swiperDiv?.nativeElement;
     if (!element) return;
 
     const swiper = new Swiper(element, {
       direction: 'horizontal',
       loop: true,
-      modules: [Navigation, Autoplay],
+      modules: [Navigation, Autoplay, Pagination, Scrollbar],
 
       navigation: {
         nextEl: '.swiper-button-next',
@@ -76,10 +76,18 @@ export class CarouselComponent implements AfterViewInit {
         disableOnInteraction: false
       },
 
+      pagination: {
+        el: '.swiper-pagination',
+        clickable: true,
+      },
+
       scrollbar: {
         el: '.swiper-scrollbar',
         draggable: true,
       },
+      // Make Swiper observe DOM changes so it recalculates layout when images load
+      observer: true,
+      observeParents: true,
     });
   }
 }
