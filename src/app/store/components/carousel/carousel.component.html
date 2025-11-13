@@ -1,9 +1,13 @@
-<div class="swiper" #swiperDiv>
+<div class="swiper" #swiperDiv [class.opacity-0]="!isCarouselReady">
   <div class="swiper-wrapper">
     <ng-container *ngIf="carouselImages.length; else noImages">
       <div class="swiper-slide" *ngFor="let imageUrl of carouselImages; let i = index">
-        <img [src]="imageUrl" [alt]="'Slide ' + (i + 1)"
-          class="w-full h-full object-cover animate-fadeIn" />
+        <img
+          [src]="imageUrl"
+          [alt]="'Slide ' + (i + 1)"
+          class="w-full h-full object-cover"
+          loading="eager"
+        />
       </div>
     </ng-container>
     <ng-template #noImages>
@@ -19,4 +23,10 @@
   <div class="swiper-button-prev"></div>
   <div class="swiper-button-next"></div>
   <div class="swiper-scrollbar"></div>
+</div>
+
+<div *ngIf="!isCarouselReady" class="skeleton rounded-lg" style="width: 90%; height: 300px; margin: 0 auto;">
+  <div class="flex items-center justify-center h-full">
+    <p class="text-gray-400">Cargando imágenes... ({{imagesLoaded}}/{{totalImages}})</p>
+  </div>
 </div>
