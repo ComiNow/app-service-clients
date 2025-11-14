@@ -1,32 +1,29 @@
-<div class="swiper" #swiperDiv [class.opacity-0]="!isCarouselReady">
-  <div class="swiper-wrapper">
-    <ng-container *ngIf="carouselImages.length; else noImages">
-      <div class="swiper-slide" *ngFor="let imageUrl of carouselImages; let i = index">
-        <img
-          [src]="imageUrl"
-          [alt]="'Slide ' + (i + 1)"
-          class="w-full h-full object-cover"
-          loading="eager"
-        />
-      </div>
-    </ng-container>
-    <ng-template #noImages>
-      <div class="swiper-slide">
-        <div class="flex items-center justify-center h-48 bg-gray-200 rounded-lg">
-          <p class="text-gray-500">No hay imágenes disponibles</p>
-        </div>
-      </div>
-    </ng-template>
-  </div>
+<div class="relative w-full rounded-lg overflow-hidden carousel-wrapper">
+  <ng-container *ngIf="carouselImages.length; else noImages">
+    <div *ngFor="let imageUrl of carouselImages; let i = index"
+         class="carousel-item absolute inset-0 transition-opacity duration-700"
+         [class.opacity-100]="i === activeIndex"
+         [class.opacity-0]="i !== activeIndex"
+         [class.pointer-events-none]="i !== activeIndex">
+      <img [src]="imageUrl" [alt]="'Slide ' + (i + 1)" class="w-full h-full object-cover" />
+    </div>
 
-  <div class="swiper-pagination"></div>
-  <div class="swiper-button-prev"></div>
-  <div class="swiper-button-next"></div>
-  <div class="swiper-scrollbar"></div>
-</div>
+    <div class="absolute inset-0 flex items-center justify-between px-4">
+      <button (click)="prev()" class="btn btn-circle bg-black/40 hover:bg-black/60 text-white">❮</button>
+      <button (click)="next()" class="btn btn-circle bg-black/40 hover:bg-black/60 text-white">❯</button>
+    </div>
 
-<div *ngIf="!isCarouselReady" class="skeleton rounded-lg" style="width: 90%; height: 300px; margin: 0 auto;">
-  <div class="flex items-center justify-center h-full">
-    <p class="text-gray-400">Cargando imágenes... ({{imagesLoaded}}/{{totalImages}})</p>
-  </div>
+    <div class="absolute bottom-3 left-1/2 transform -translate-x-1/2 flex gap-2">
+      <button *ngFor="let _ of carouselImages; let idx = index"
+              (click)="goTo(idx)"
+              [class.bg-white]="idx === activeIndex"
+              class="w-3 h-3 rounded-full bg-white/50"></button>
+    </div>
+  </ng-container>
+
+  <ng-template #noImages>
+    <div class="flex items-center justify-center h-48 bg-gray-200 rounded-lg">
+      <p class="text-gray-500">No hay imágenes disponibles</p>
+    </div>
+  </ng-template>
 </div>
