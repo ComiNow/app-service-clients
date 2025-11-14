@@ -21,6 +21,17 @@ export class CarouselComponent implements OnInit, OnDestroy {
   activeIndex = 0;
   autoplayInterval = 3000;
   private autoplayTimer: ReturnType<typeof setInterval> | null = null;
+  isHovering = false;
+
+  private get hasMultipleImages(): boolean {
+    return this.carouselImages.length > 1;
+  }
+
+  private restartAutoplayIfAllowed(): void {
+    if (!this.isHovering && this.hasMultipleImages) {
+      this.startAutoplay();
+    }
+  }
 
   get carouselImages(): string[] {
     const images = this.appConfigService.imageCarousel;
@@ -35,7 +46,7 @@ export class CarouselComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    if (this.carouselImages.length > 1) {
+    if (this.hasMultipleImages) {
       this.startAutoplay();
     }
   }
@@ -58,25 +69,30 @@ export class CarouselComponent implements OnInit, OnDestroy {
 
   next(): void {
     this.activeIndex = (this.activeIndex + 1) % this.carouselImages.length;
+    this.restartAutoplayIfAllowed();
   }
 
   prev(): void {
     this.activeIndex = (this.activeIndex - 1 + this.carouselImages.length) % this.carouselImages.length;
+    this.restartAutoplayIfAllowed();
   }
 
   goTo(index: number): void {
     if (index >= 0 && index < this.carouselImages.length) {
       this.activeIndex = index;
+      this.restartAutoplayIfAllowed();
     }
   }
 
   @HostListener('mouseenter')
   onMouseEnter(): void {
+    this.isHovering = true;
     this.stopAutoplay();
   }
 
   @HostListener('mouseleave')
   onMouseLeave(): void {
-    if (this.carouselImages.length > 1) this.startAutoplay();
+    this.isHovering = false;
+    this.restartAutoplayIfAllowed();
   }
 }
